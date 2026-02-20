@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统公告 - 登录通道调整</title>
+    <style>
+        /* 全局样式重置和基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 公告卡片样式 */
+        .notice-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border-left: 5px solid #409eff;
+        }
+
+        /* 公告标题样式 */
+        .notice-title {
+            font-size: 24px;
+            color: #303133;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e6e6e6;
+            text-align: center;
+        }
+
+        /* 公告内容样式 */
+        .notice-content {
+            font-size: 16px;
+            color: #606266;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        /* 底部提示样式 */
+        .notice-footer {
+            font-size: 14px;
+            color: #909399;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* 响应式适配 - 手机端 */
+        @media (max-width: 768px) {
+            .notice-card {
+                padding: 25px 20px;
+            }
+            .notice-title {
+                font-size: 20px;
+            }
+            .notice-content {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notice-card">
+        <h1 class="notice-title">系统公告</h1>
+        <div class="notice-content">
+            由于组织相关架构调整和未来发展规划，本次更新将关闭外部人员登录通道，外部人员通道将暂时关闭，具体是否开放见后期更新计划，给您带来的不便，请您谅解！
+        </div>
+        <div class="notice-footer">
+            感谢您的理解与支持
+        </div>
+    </div>
+</body>
+</html>
