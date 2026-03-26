@@ -1,181 +1,1448 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <link rel="icon" href="1.ico" type="image/x-icon">
-<title>古文九州官网</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-    box-sizing: border-box;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古文九州组织官网</title>
+    <!-- 浏览器标题栏LOGO替换：将下面的1.ico替换为你的LOGO图片路径（建议用ico/png格式） -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- 引入字体图标增强视觉 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局重置与基础变量 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+        }
 
-/* body 样式 */
-body {
-    font-family: Arial;
-    margin: 0;
-}
+        :root {
+            /* 年轻化配色体系 - 活力橙为主，清新蓝/柔粉为辅 */
+            --primary: #FF7D00;
+            --primary-light: #FF9533;
+            --primary-gradient: linear-gradient(135deg, #FF7D00, #FFB74D);
+            --secondary: #3B82F6;
+            --secondary-light: #60A5FA;
+            --accent: #EC4899;
+            --bg-light: #FAFAFA;
+            --bg-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --text-light: #FFFFFF;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.4s ease;
+            --transition-slow: 0.6s ease;
+        }
 
-/* 标题 */
-.header {
-    padding: 80px;
-    text-align: center;
-    background:#1abc9c;
-;
-    color: white;
-}
+        /* 基础样式 */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-/* 标题字体加大 */
-.header h1 {
-    font-size: 40px;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-fast);
+        }
 
-/* 导航 */
-.navbar {
-    overflow: hidden;
-    background-color:#070707dc;
-;
-}
+        ul {
+            list-style: none;
+        }
 
-/* 导航栏样式 */
-.navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
+        /* 页面加载动画 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: loaderFadeOut 0.8s ease 1s forwards;
+        }
 
-/* 右侧链接*/
-.navbar a.right {
-    float: right;
-}
+        .loader-icon {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--text-light);
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: loaderSpin 1s linear infinite;
+        }
 
-/* 鼠标移动到链接的颜色 */
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-}
+        @keyframes loaderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-/* 列容器 */
-.row {  
-    display: -ms-flexbox; /* IE10 */
-    display: flex;
-    -ms-flex-wrap: wrap; /* IE10 */
-    flex-wrap: wrap;
-}
+        @keyframes loaderFadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
 
-/* 创建两个列 */
-/* 边栏 */
-.side {
-    -ms-flex: 30%; /* IE10 */
-    flex: 30%;
-    background-color: #f1f1f1;
-    padding: 20px;
-}
+        /* 头部Hero区域 - 重点修改：更扁（降低高度）、铺满屏幕宽度 */
+        .hero {
+            height: 45vh; /* 从65vh降至45vh，更扁 */
+            min-height: 300px; /* 从450px降至300px，最小高度也降低 */
+            width: 100vw; /* 关键：铺满屏幕宽度 */
+            max-width: none; /* 关键：取消最大宽度限制 */
+            margin: 0; /* 关键：取消居中margin */
+            background: var(--primary-gradient);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: var(--text-light);
+            animation: heroBgMove 15s ease infinite alternate;
+        }
 
-/* 主要的内容区域 */
-.main {   
-    -ms-flex: 70%; /* IE10 */
-    flex: 70%;
-    background-color: white;
-    padding: 20px;
-}
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.2;
+            animation: bgFloat 20s linear infinite;
+        }
 
-/* 测试图片 */
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
+        @keyframes heroBgMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
 
-/* 底部 */
-.footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-}
+        @keyframes bgFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, 10px) rotate(2deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
 
-/* 响应式布局 - 在屏幕设备宽度尺寸小于 700px 时, 让两栏上下堆叠显示 */
-@media screen and (max-width: 700px) {
-    .row {   
-        flex-direction: column;
-    }
-}
+        .hero-title {
+            font-size: clamp(2rem, 7vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.5s forwards;
+        }
 
-/* 响应式布局 - 在屏幕设备宽度尺寸小于 400px 时, 让导航栏目上下堆叠显示 */
-@media screen and (max-width: 400px) {
-    .navbar a {
-        float: none;
-        width: 100%;
-    }
-}
-</style>
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            max-width: 700px;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease 0.8s forwards;
+        }
+
+        .hero-cta {
+            padding: 12px 28px;
+            background: var(--text-light);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: var(--shadow-md);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease 1.1s forwards;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            background: #f8f8f8;
+        }
+
+        /* 导航栏样式 - 粘性+渐变背景 */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 999;
+            padding: 0; /* 关键：取消左右padding，让导航栏铺满屏幕 */
+            width: 100vw; /* 关键：导航栏铺满屏幕宽度 */
+            transition: var(--transition-normal);
+        }
+
+        .navbar-scrolled {
+            padding: 8px 0; /* 关键：同步修改滚动后的padding */
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1200px; /* 保持内容宽度不变 */
+            margin: 0 auto; /* 内容居中 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            padding: 0 20px; /* 内容保留左右内边距 */
+            transition: var(--transition-normal);
+        }
+
+        .navbar-scrolled .nav-container {
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* LOGO图标样式：适配自定义图片 */
+        .logo-img {
+            width: 32px; /* LOGO宽度，可根据需要调整 */
+            height: 32px; /* LOGO高度，可根据需要调整 */
+            border-radius: 4px; /* 可选：圆角效果 */
+            object-fit: contain; /* 保证图片比例不变 */
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark);
+            position: relative;
+            padding: 6px 0;
+            font-size: 0.95rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 3px;
+            transition: var(--transition-normal);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .login-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .login-btn {
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition-normal);
+        }
+
+        .login-btn.internal {
+            background: var(--primary-gradient);
+            color: var(--text-light);
+        }
+
+        .login-btn.external {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* 主内容容器 - 关键修改：容器铺满屏幕，内容宽度不变 */
+        .container {
+            width: 100vw; /* 容器铺满屏幕宽度 */
+            max-width: none; /* 取消最大宽度限制 */
+            margin: 40px 0; /* 只保留上下margin，取消左右auto */
+            padding: 0; /* 取消左右padding */
+        }
+
+        /* 内容包裹层：保持原宽度，居中显示 */
+        .content-wrap {
+            max-width: 1200px; /* 保持原内容宽度 */
+            margin: 0 auto; /* 内容居中 */
+            padding: 0 20px; /* 保留原内边距 */
+        }
+
+        /* 通用板块样式 */
+        .section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition-slow);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+        }
+
+        /* 关于我们板块 */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .about-img {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-slow);
+        }
+
+        .about:hover .about-img {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about:hover .about-img img {
+            transform: scale(1.05);
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .about-content h3 {
+            font-size: 1.6rem;
+            color: var(--primary);
+        }
+
+        .about-content p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* 核心服务板块 */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary-gradient);
+            transition: var(--transition-normal);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-card:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .service-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            transition: var(--transition-normal);
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+            color: var(--secondary);
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .service-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 更新日志板块 */
+        .update-log {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .log-timeline {
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .log-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--primary-gradient);
+        }
+
+        .log-item {
+            position: relative;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: var(--transition-slow);
+        }
+
+        .log-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .log-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            box-shadow: 0 0 0 3px rgba(255, 125, 0, 0.1);
+        }
+
+        .log-date {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-content {
+            background: var(--bg-light);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            line-height: 1.7;
+        }
+
+        .log-content ul {
+            padding-left: 18px;
+            list-style: disc;
+        }
+
+        .log-content li {
+            margin-bottom: 6px;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* 特别提醒板块 */
+        .reminder {
+            background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+            border-left: 5px solid var(--accent);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-normal);
+        }
+
+        .reminder:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .reminder-title {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reminder-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reminder-content p {
+            font-size: 1rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        /* 公告中心板块 */
+        .notice-center {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .notice-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 8px;
+        }
+
+        .notice-tab {
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .notice-tab.active {
+            background: var(--primary-gradient);
+            color: var(--text-light);
+        }
+
+        .notice-tab:not(.active):hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .notice-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .notice-content.active {
+            display: block;
+        }
+
+        .notice-item {
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-light);
+            margin-bottom: 15px;
+            transition: var(--transition-fast);
+        }
+
+        .notice-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .notice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .notice-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .notice-date {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        .notice-text {
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 联系我们板块 */
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition-fast);
+        }
+
+        .contact-item:hover {
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 1.3rem;
+        }
+
+        .contact-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .contact-details p {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+            transition: var(--transition-fast);
+        }
+
+        .contact-link:hover {
+            background: var(--primary-gradient);
+            color: var(--text-light);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-img {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .contact-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-slow);
+        }
+
+        .contact:hover .contact-img img {
+            transform: scale(1.05);
+        }
+
+        /* 页脚样式 - 关键修改：铺满屏幕宽度 */
+        .footer {
+            background: var(--text-dark);
+            color: var(--text-light);
+            padding: 60px 0 30px; /* 取消左右padding */
+            margin-top: 60px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            width: 100vw; /* 铺满屏幕宽度 */
+        }
+
+        .footer-container {
+            max-width: 1200px; /* 保持内容宽度不变 */
+            margin: 0 auto; /* 内容居中 */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 0 20px; /* 保留内边距 */
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 页脚LOGO图标样式 */
+        .footer-logo-img {
+            width: 36px; /* 页脚LOGO宽度，可调整 */
+            height: 36px; /* 页脚LOGO高度，可调整 */
+            border-radius: 4px;
+            object-fit: contain;
+        }
+
+        .footer-desc {
+            color: #9CA3AF;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .footer-links h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-links h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 35px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .footer-link {
+            color: #9CA3AF;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            max-width: 1200px; /* 保持内容宽度不变 */
+            margin: 0 auto; /* 内容居中 */
+            padding-top: 30px;
+            border-top: 1px solid #374151;
+            text-align: center;
+            color: #9CA3AF;
+            font-size: 0.9rem;
+            padding: 30px 20px 0; /* 保留内边距 */
+        }
+
+        /* 动画关键帧 */
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media screen and (max-width: 992px) {
+            .about, .contact {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-img, .contact-img {
+                order: -1;
+            }
+            
+            .nav-menu {
+                gap: 15px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu, .login-buttons {
+                display: none;
+            }
+            
+            .nav-menu.mobile-active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-white);
+                padding: 15px;
+                box-shadow: var(--shadow-md);
+                gap: 12px;
+            }
+            
+            .login-buttons.mobile-active {
+                display: flex;
+                position: absolute;
+                top: 240px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-white);
+                padding: 15px;
+                box-shadow: var(--shadow-md);
+                justify-content: center;
+            }
+            
+            .hero {
+                height: 40vh; /* 移动端Hero更扁 */
+                min-height: 250px;
+            }
+            
+            .section {
+                margin-bottom: 40px;
+            }
+            
+            .update-log, .notice-center {
+                padding: 15px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .hero {
+                height: 35vh; /* 小屏移动端进一步降低高度 */
+                min-height: 200px;
+            }
+            
+            .services {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-card {
+                padding: 15px;
+            }
+            
+            .log-timeline {
+                padding-left: 15px;
+            }
+            
+            .log-item::before {
+                left: -15px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<div class="header">
-  <h1>古文九州</h1>
-  <p>注：原古典文化官方网站</p>
-</div>
-<div class="navbar">
-    <a href="index.html">首页</a>
-    <a href="https://gudianwenhua.github.io/guwenjiuzhoukaowupingtai/">古文九州考务平台</a>
-    <a href="https://h5.clewm.net/?url=qr61.cn%2FoTRjnU%2Fqfe4er0">反馈</a>
-    <a href="古文九州官网 用户协议.html">用户协议</a>
-    <a href="古文九州官网 隐私政策.html">隐私政策</a>
-    <a href="内部关停公告.html" class="right">内部人员登录</a>
-  <a href="外部关停公告.html" class="right">外部人员登录</a>
-</div>
-<div class="row">
-  <div class="side">
-      <h2>关于我们</h2>
-      <h5>官方LOGO:</h5>
-      <img src="0029daef-113a-1cad-9616-126d5d09d421.png" width="200" height="200" />
-      <p>我们是一个于2021年4月24号建立的组织，专门研究试题，我们有试题研究中心</p>
-      <h3>关于登录方法</p>
-      <h5>内部人员登录方法</h5>
-      <p>在该页面点击内部人员登录，由于本次更新接入了飞书，有一部分的内部人员还没有注册账号和加入组织，所以请各位还没有注册和加入组织的内部人员，尽快注册和加入，还没有注册的在注册时就会弹出加入组织的申请，已经注册的但是还没有加入的，会在消息栏里有加入申请！</p>
-      <h5>外部人员登录方法</h5>
-      <p>在该页面点击外部人员登录，跳转后请选择你的机构，跳转后输入你的机构内部密码，如果忘记密码，请联系官方管理人员（15118586836，微信同步）修改，谢谢！</p>
-  <h5>目前未开放外部组织注册通道，以后会逐步更新，开放，敬请期待！</h5>
+    <!-- 页面加载动画 -->
+    <div class="page-loader">
+        <div class="loader-icon"></div>
     </div>
-  <div class="main">
-    <h1>重大更新</h1>
-    <h2>更新公告</h2>
-    <h4>
-        <p>1.本组织已开通WPS 365，欢迎组织成员使用，请各位组织成员尽快激活WPS 365组织账号</p>
-        <p>2.由于组织相关架构调整和未来发展规划，本次更新将关闭外部人员登录通道，外部人员通道将暂时关闭，具体是否开放见后期更新计划</p>
-    <p>3.全新考务平台已经上线</p>    
-    <p>4.由于官网将进行全新UI设计，所以内部人员登录页面将暂时关闭，请前往WPS协作进行办公</p>
-    <p>5.将建造组织统一信息登陆平台，后续将逐渐应用到网页当中，当前考务平台已经试行</p>
-    </h4>
-    <h1>更新日志</h1>
-    <h4>
-        <h5>2025年6月</h5>
-        <p>1.古典文化已于2025年1月更名为古文九州，新的LOGO已在官网左侧介绍栏中显示，各位旧古典文化用户不要相信其他的假冒组织！如遇假冒网站后假冒我们的工作人员，请点击链接选择假冒反馈进行填写，谢谢！</p>
-      <a href="https://h5.clewm.net/?url=qr61.cn%2FoTRjnU%2Fqfe4er0">反馈链接</a>
-      <p>2.组织已接入飞书，内部人员可以直接在官网上登录跳转进行工作</p>
-      <p>3.由于本次更新接入了飞书，有一部分的内部人员还没有注册账号和加入组织，所以请各位还没有注册和加入组织的内部人员，尽快注册和加入，还没有注册的在注册时就会弹出加入组织的申请，已经注册的但是还没有加入的，会在消息栏里有加入申请！</p>
-      <p>4.外部人员的注册将在下次更新中开放，本次更新允许现在有外部账号的外部人员进行登录！</p>
-      <p>5.2025年古文九州考务平台将于2025年2月重大更新，将于2025年4月24日上线发布</p>
-         </h4>
-<br>
-<h1>下次更新预告</h1>
-<h4>
-    <P>1.加入古文九州统一信息登录平台验证机制</P>
-    <p>2.2026年古文九州考务平台重大更新，全新UI设计，更多功能上线</p>
-    <p>3.2026年古文九州官网重大更新，全新UI设计，更多功能上线</p>
-</h4>
-      <br>
-  <p>还有更多功能敬请期待！</p>
-  <br>
-  
-    </div>
-</div>
- 
-<div class="footer">
-  <h2>古文九州官网</h2>
-</div>
 
+    <!-- 头部Hero区域 -->
+    <div class="hero">
+        <h1 class="hero-title">古文九州</h1>
+        <p class="hero-subtitle">原古典文化官方网站 | 下属学校官网请点击友情链接</p>
+        <button class="hero-cta" onclick="scrollToSection('service')">探索核心服务</button>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <!-- 导航栏LOGO替换：将src中的"logo.png"替换为你的组织LOGO图片路径（建议尺寸32x32px） -->
+                <img src="logo.png" alt="古文九州LOGO" class="logo-img">
+                古文九州
+            </a>
+            
+            <!-- 桌面端菜单 -->
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link" data-section="home">首页</a></li>
+                <li><a href="#about" class="nav-link" data-section="about">关于我们</a></li>
+                <li><a href="#service" class="nav-link" data-section="service">核心服务</a></li>
+                <li><a href="#log" class="nav-link" data-section="log">更新日志</a></li>
+                <li><a href="#remind" class="nav-link" data-section="remind">特别提醒</a></li>
+                <li><a href="#notice" class="nav-link" data-section="notice">公告中心</a></li>
+                <li><a href="#contact" class="nav-link" data-section="contact">联系我们</a></li>
+            </ul>
+            
+            <!-- 登录按钮 -->
+            <div class="login-buttons" id="loginButtons">
+                <!-- 跳转备注：内部人员登录页面，替换href为实际登录页面路径 -->
+                <a href="内部关停公告.html" class="login-btn internal">内部人员登录</a>
+                <!-- 跳转备注：外部人员登录页面，替换href为实际登录页面路径 -->
+                <a href="外部关停公告.html" class="login-btn external">外部人员登录</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 - 关键修改：新增content-wrap包裹层 -->
+    <div class="container">
+        <div class="content-wrap">
+            <!-- 关于我们板块 -->
+            <section class="section" id="about">
+                <h2 class="section-title">关于我们</h2>
+                <div class="about">
+                    <div class="about-content">
+                        <h3>专注试题研究，赋能考务服务</h3>
+                        <p>古文九州（原古典文化）成立于2021年4月24日，是专注于试题研究的专业组织，下设试题研究中心，为内部及合作机构提供专业的考务相关服务。</p>
+                        <p>我们始终秉持专业、严谨、创新的理念，不断优化考务服务体系，致力于为用户提供更高效、更优质的服务体验。</p>
+                        <p>2025年，组织正式完成品牌升级，从"古典文化"更名为"古文九州"，开启全新发展阶段。</p>
+                    </div>
+                    <div class="about-img">
+                        <!-- 图片替换备注：关于我们板块LOGO图片，替换src为实际图片路径 -->
+                        <img src="logo.png" alt="古文九州官方LOGO">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 核心服务板块 -->
+            <section class="section" id="service">
+                <h2 class="section-title">核心服务</h2>
+                <div class="services">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>试题研究服务</h3>
+                        <p>依托专业的试题研究中心，为组织内部及合作机构提供试题研发、审核、优化等全流程服务，确保试题质量与专业性。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h3>考务平台服务</h3>
+                        <p>提供一站式考务管理平台，涵盖试题分发、考试组织、成绩管理等核心功能，持续迭代升级，提升考务效率。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>组织协作服务</h3>
+                        <p>接入飞书、WPS 365等协作工具，为组织成员提供高效的线上协作办公环境，提升团队协作效率。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 更新日志板块 -->
+            <section class="section" id="log">
+                <h2 class="section-title">更新日志</h2>
+                <div class="update-log">
+                    <div class="log-timeline">
+                        <div class="log-item">
+                            <div class="log-date">
+                                <i class="fas fa-calendar-check"></i>
+                                2025年6月 · 核心更新
+                            </div>
+                            <div class="log-content">
+                                <ul>
+                                    <li>组织名称正式由"古典文化"更名为"古文九州"，同步更新官方LOGO</li>
+                                    <li>完成飞书系统全量接入，内部人员可通过官网跳转飞书协作办公</li>
+                                    <li>开通WPS 365组织账号，面向全体内部成员开放使用</li>
+                                    <li>全新考务平台上线，接入统一信息登录验证机制</li>
+                                    <li>临时关闭外部人员登录通道（架构调整）</li>
+                                    <li>暂关闭官网内部登录页面，引导至WPS协作办公</li>
+                                    <li>支持已有外部账号人员登录，暂未开放新外部组织注册</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                2025年2月 · 规划更新
+                            </div>
+                            <div class="log-content">
+                                <ul>
+                                    <li>确定2025年考务平台重大更新计划，预计4月24日正式上线</li>
+                                    <li>启动官网UI全新设计筹备工作</li>
+                                    <li>启动统一信息登录平台研发工作</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-date">
+                                <i class="fas fa-calendar-edit"></i>
+                                2024年12月 · 基础更新
+                            </div>
+                            <div class="log-content">
+                                <ul>
+                                    <li>优化考务平台核心功能，提升稳定性</li>
+                                    <li>完善内部人员权限管理体系</li>
+                                    <li>升级官网安全防护机制</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 特别提醒板块 -->
+            <section class="section" id="remind">
+                <h2 class="section-title">特别提醒</h2>
+                <div class="reminder">
+                    <div class="reminder-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        重要提示
+                    </div>
+                    <div class="reminder-content">
+                        <p>⚠️ 古文九州从未授权任何第三方机构或个人使用本组织名称及相关服务，如遇假冒网站、假冒工作人员，请立即通过官方反馈渠道举报，谨防受骗。</p>
+                        <p>📢 所有官方通知均以本官网公告为准，组织不会通过非官方渠道发布重要通知，请各位用户注意核实信息来源。</p>
+                        <p>📞 官方唯一客服电话：15118586836（微信同步），切勿相信其他联系方式。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 公告中心板块 -->
+            <section class="section" id="notice">
+                <h2 class="section-title">公告中心</h2>
+                <div class="notice-center">
+                    <div class="notice-tabs">
+                        <div class="notice-tab active" data-tab="important">重要通知</div>
+                        <div class="notice-tab" data-tab="update">更新公告</div>
+                        <div class="notice-tab" data-tab="login">登录相关</div>
+                        <div class="notice-tab" data-tab="plan">更新计划</div>
+                    </div>
+
+                    <!-- 重要通知 -->
+                    <div class="notice-content active" id="important">
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">组织名称变更通知</h3>
+                                <span class="notice-date">2025年1月</span>
+                            </div>
+                            <p class="notice-text">古典文化已于2025年1月正式更名为古文九州，新LOGO已在官网展示。请各位用户注意甄别，切勿相信假冒组织及网站，如遇假冒情况可通过反馈渠道举报。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">WPS 365组织账号开通通知</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">本组织已开通WPS 365服务，欢迎组织成员使用，请各位成员尽快激活WPS 365组织账号，相关使用指引将通过内部渠道发布。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">外部人员登录通道临时关闭通知</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">因组织架构调整和未来发展规划，本次更新将暂时关闭外部人员登录通道，具体恢复开放时间请关注后续公告。</p>
+                        </div>
+                    </div>
+
+                    <!-- 更新公告 -->
+                    <div class="notice-content" id="update">
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">全新考务平台上线公告</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">古文九州全新考务平台已正式上线，平台接入统一信息登录验证机制，内部人员可通过官网链接访问使用。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">飞书接入完成公告</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">组织已完成飞书系统接入，内部人员可通过官网登录入口跳转至飞书进行工作协作，请未注册/未加入组织的人员尽快完成相关操作。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">内部人员登录页面临时关闭通知</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">因官网UI全新设计升级，内部人员登录页面将暂时关闭，期间请前往WPS协作平台进行日常办公。</p>
+                        </div>
+                    </div>
+
+                    <!-- 登录相关 -->
+                    <div class="notice-content" id="login">
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">内部人员登录说明</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">点击官网"内部人员登录"入口，跳转飞书完成登录。未注册飞书账号的人员注册时会弹出组织加入申请；已注册但未加入组织的人员，可在消息栏查收加入申请。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">外部人员登录说明</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">（当前通道临时关闭）正常流程：点击"外部人员登录"→选择所属机构→输入机构内部密码。忘记密码可联系官方管理人员（15118586836，微信同步）修改。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">外部组织注册通道说明</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">目前暂未开放外部组织注册通道，后续将逐步更新开放，具体时间请关注官网公告。本次更新仅允许已有外部账号的人员登录。</p>
+                        </div>
+                    </div>
+
+                    <!-- 更新计划 -->
+                    <div class="notice-content" id="plan">
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">2025年考务平台更新计划</h3>
+                                <span class="notice-date">2025年2月</span>
+                            </div>
+                            <p class="notice-text">2025年古文九州考务平台将于2025年2月进行重大更新，预计2025年4月24日正式上线发布。</p>
+                        </div>
+                        <div class="notice-item">
+                            <div class="notice-header">
+                                <h3 class="notice-title">2026年平台更新预告</h3>
+                                <span class="notice-date">2025年6月</span>
+                            </div>
+                            <p class="notice-text">1. 加入古文九州统一信息登录平台验证机制；2. 2026年考务平台全新UI设计+功能升级；3. 2026年官网全新UI设计+功能升级。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 联系我们板块 -->
+            <section class="section" id="contact">
+                <h2 class="section-title">联系我们</h2>
+                <div class="contact">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>官方客服</h3>
+                                <p>15118586836（微信同步）</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>问题反馈</h3>
+                                <!-- 跳转备注：问题反馈链接，替换href为实际反馈页面路径 -->
+                                <p><a href="https://h5.clewm.net/?url=qr61.cn%2FoTRjnU%2Fqfe4er0">点击前往反馈渠道</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>快速链接</h3>
+                                <div class="contact-links">
+                                    <!-- 跳转备注：考务平台链接，替换href为实际平台路径 -->
+                                    <a href="https://gudianwenhua.github.io/guwenjiuzhoukaowupingtai/" class="contact-link"><i class="fas fa-globe"></i></a>
+                                    <!-- 跳转备注：用户协议页面，替换href为实际协议路径 -->
+                                    <a href="古文九州官网 用户协议.html" class="contact-link"><i class="fas fa-file-contract"></i></a>
+                                    <!-- 跳转备注：隐私政策页面，替换href为实际政策路径 -->
+                                    <a href="古文九州官网 隐私政策.html" class="contact-link"><i class="fas fa-shield-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-img">
+                        <!-- 图片替换备注：联系我们板块LOGO图片，替换src为实际图片路径 -->
+                        <img src="qrcode_for_gh_0335b4336e31_258.jpg" alt="古文九州联系方式">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <!-- 页脚LOGO替换：将src中的"logo.png"替换为你的组织LOGO图片路径（建议尺寸36x36px） -->
+                    <img src="logo.png" alt="古文九州LOGO" class="footer-logo-img">
+                    古文九州
+                </div>
+                <p class="footer-desc">原古典文化官方网站 | 专注试题研究与考务服务，赋能每一次成长</p>
+            </div>
+            <div class="footer-links">
+                <h3>快速导航</h3>
+                <ul>
+                    <li><a href="#home" class="footer-link">首页</a></li>
+                    <li><a href="#about" class="footer-link">关于我们</a></li>
+                    <li><a href="#service" class="footer-link">核心服务</a></li>
+                    <li><a href="#log" class="footer-link">更新日志</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>更多信息</h3>
+                <ul>
+                    <li><a href="#remind" class="footer-link">特别提醒</a></li>
+                    <li><a href="#notice" class="footer-link">公告中心</a></li>
+                    <li><a href="#contact" class="footer-link">联系我们</a></li>
+                    <!-- 跳转备注：用户协议页面，替换href为实际协议路径 -->
+                    <li><a href="古文九州官网 用户协议.html" class="footer-link">用户协议</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>联系方式</h3>
+                <ul>
+                    <!-- 跳转备注：拨打电话链接，无需修改（仅移动端生效） -->
+                    <li><a href="tel:15118586836" class="footer-link">15118586836</a></li>
+                    <!-- 跳转备注：问题反馈链接，替换href为实际反馈页面路径 -->
+                    <li><a href="https://h5.clewm.net/?url=qr61.cn%2FoTRjnU%2Fqfe4er0" class="footer-link">问题反馈</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2021-2026 古文九州 版权所有 | 官方客服：15118586836</p>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('navbar-scrolled');
+                } else {
+                    navbar.classList.remove('navbar-scrolled');
+                }
+            });
+
+            // 移动端菜单切换
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            const loginButtons = document.getElementById('loginButtons');
+            
+            menuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('mobile-active');
+                loginButtons.classList.toggle('mobile-active');
+                
+                // 切换菜单图标
+                const icon = menuToggle.querySelector('i');
+                if (icon.classList.contains('fa-bars')) {
+                    icon.classList.replace('fa-bars', 'fa-times');
+                } else {
+                    icon.classList.replace('fa-times', 'fa-bars');
+                }
+            });
+
+            // 平滑滚动到指定板块
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const navbarHeight = navbar.offsetHeight;
+                    const sectionTop = section.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+                    
+                    window.scrollTo({
+                        top: sectionTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // 导航链接点击事件
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有active类
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    // 添加当前active类
+                    this.classList.add('active');
+                    
+                    const sectionId = this.getAttribute('data-section');
+                    scrollToSection(sectionId);
+                    
+                    // 移动端点击后关闭菜单
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('mobile-active');
+                        loginButtons.classList.remove('mobile-active');
+                        menuToggle.querySelector('i').classList.replace('fa-times', 'fa-bars');
+                    }
+                });
+            });
+
+            // 公告标签切换
+            const noticeTabs = document.querySelectorAll('.notice-tab');
+            const noticeContents = document.querySelectorAll('.notice-content');
+            
+            noticeTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有active类
+                    noticeTabs.forEach(t => t.classList.remove('active'));
+                    noticeContents.forEach(c => c.classList.remove('active'));
+                    
+                    // 添加当前active类
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // 滚动动画 - 元素进入视口时显示
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const sectionObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // 观察所有板块
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // 观察更新日志子项
+            const logItems = document.querySelectorAll('.log-item');
+            logItems.forEach(item => {
+                sectionObserver.observe(item);
+            });
+
+            // 首页链接处理
+            document.querySelector('a[href="#home"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                
+                // 更新active类
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+
+            // 初始化 - 标记首页为active
+            document.querySelector('.nav-link[data-section="home"]').classList.add('active');
+        });
+    </script>
+</body>
+</html>
