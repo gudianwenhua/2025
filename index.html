@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>古文九州组织官网</title>
-    <!-- 浏览器标题栏LOGO替换：将下面的1.ico替换为你的LOGO图片路径（建议用ico/png格式） -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- 引入字体图标增强视觉 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* 全局重置与基础变量 */
@@ -58,6 +56,73 @@
 
         ul {
             list-style: none;
+        }
+
+        /* 新增：通知弹窗样式 */
+        .notice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999; /* 最高层级，覆盖所有元素 */
+        }
+        .modal-content {
+            width: 90%;
+            max-width: 600px;
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .modal-text {
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .countdown-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+        .close-btn {
+            padding: 10px 30px;
+            background: var(--primary-gradient);
+            color: var(--text-light);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            opacity: 0.5;
+            pointer-events: none; /* 初始不可点击 */
+        }
+        .close-btn.active {
+            opacity: 1;
+            pointer-events: auto; /* 5秒后可点击 */
+        }
+        .close-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
         }
 
         /* 页面加载动画 */
@@ -924,6 +989,17 @@
             .update-log, .notice-center {
                 padding: 15px;
             }
+            /* 移动端弹窗适配 */
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+            .modal-title {
+                font-size: 1.2rem;
+            }
+            .modal-text {
+                font-size: 0.9rem;
+            }
         }
 
         @media screen and (max-width: 480px) {
@@ -951,6 +1027,25 @@
     </style>
 </head>
 <body>
+    <!-- 新增：通知弹窗 -->
+    <div class="notice-modal" id="noticeModal">
+        <div class="modal-content">
+            <h3 class="modal-title">古文九州官网调整通知</h3>
+            <div class="modal-text">
+                各位同学、老师及访客朋友们：<br><br>
+                您好！根据古文九州组织未来发展规划，我们已完成官网整体更新调整，但部分核心功能（统一登录平台、考务平台）暂未开放，具体上线时间将通过官网公告栏另行通知。<br><br>
+                本次规划调整中，我们对外部用户的登录、注册服务做出调整：即日起暂停外部用户相关服务，恢复时间请以官网公告栏公示为准。<br><br>
+                衷心感谢每一位外部用户对本组织的信任与支持！<br><br>
+                古文九州发展规划部<br>
+                2026年3月26日
+            </div>
+            <div class="modal-footer">
+                <span class="countdown-text" id="countdown">请阅读5秒后关闭（剩余：5秒）</span>
+                <button class="close-btn" id="closeBtn">关闭通知</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 页面加载动画 -->
     <div class="page-loader">
         <div class="loader-icon"></div>
@@ -967,7 +1062,6 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
-                <!-- 导航栏LOGO替换：将src中的"logo.png"替换为你的组织LOGO图片路径（建议尺寸32x32px） -->
                 <img src="logo.png" alt="古文九州LOGO" class="logo-img">
                 古文九州
             </a>
@@ -985,9 +1079,7 @@
             
             <!-- 登录按钮 -->
             <div class="login-buttons" id="loginButtons">
-                <!-- 跳转备注：内部人员登录页面，替换href为实际登录页面路径 -->
                 <a href="内部关停公告.html" class="login-btn internal">内部人员登录</a>
-                <!-- 跳转备注：外部人员登录页面，替换href为实际登录页面路径 -->
                 <a href="外部关停公告.html" class="login-btn external">外部人员登录</a>
             </div>
             
@@ -998,7 +1090,7 @@
         </div>
     </nav>
 
-    <!-- 主内容区 - 关键修改：新增content-wrap包裹层 -->
+    <!-- 主内容区 -->
     <div class="container">
         <div class="content-wrap">
             <!-- 关于我们板块 -->
@@ -1012,7 +1104,6 @@
                         <p>2025年，组织正式完成品牌升级，从"古典文化"更名为"古文九州"，开启全新发展阶段。</p>
                     </div>
                     <div class="about-img">
-                        <!-- 图片替换备注：关于我们板块LOGO图片，替换src为实际图片路径 -->
                         <img src="logo.png" alt="古文九州官方LOGO">
                     </div>
                 </div>
@@ -1132,21 +1223,18 @@
                                 <h3 class="notice-title">组织名称变更通知</h3>
                                 <span class="notice-date">2025年1月</span>
                             </div>
-                            <p class="notice-text">古典文化已于2025年1月正式更名为古文九州，新LOGO已在官网展示。请各位用户注意甄别，切勿相信假冒组织及网站，如遇假冒情况可通过反馈渠道举报。</p>
+                            <div class="notice-text">
+                                经组织核心团队决议，自2025年1月起，"古典文化"正式更名为"古文九州"，原品牌下所有服务、权益均由新品牌承接，官网域名为唯一官方入口。
+                            </div>
                         </div>
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">WPS 365组织账号开通通知</h3>
+                                <h3 class="notice-title">外部用户服务调整通知</h3>
                                 <span class="notice-date">2025年6月</span>
                             </div>
-                            <p class="notice-text">本组织已开通WPS 365服务，欢迎组织成员使用，请各位成员尽快激活WPS 365组织账号，相关使用指引将通过内部渠道发布。</p>
-                        </div>
-                        <div class="notice-item">
-                            <div class="notice-header">
-                                <h3 class="notice-title">外部人员登录通道临时关闭通知</h3>
-                                <span class="notice-date">2025年6月</span>
+                            <div class="notice-text">
+                                因组织架构调整，即日起暂停外部用户注册及登录服务，已有外部账号用户可正常使用核心功能，恢复时间将通过公告栏公示。
                             </div>
-                            <p class="notice-text">因组织架构调整和未来发展规划，本次更新将暂时关闭外部人员登录通道，具体恢复开放时间请关注后续公告。</p>
                         </div>
                     </div>
 
@@ -1154,24 +1242,21 @@
                     <div class="notice-content" id="update">
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">全新考务平台上线公告</h3>
+                                <h3 class="notice-title">官网UI全新升级完成</h3>
                                 <span class="notice-date">2025年6月</span>
                             </div>
-                            <p class="notice-text">古文九州全新考务平台已正式上线，平台接入统一信息登录验证机制，内部人员可通过官网链接访问使用。</p>
+                            <div class="notice-text">
+                                官网已完成UI视觉全量升级，优化了移动端适配、页面加载速度，新增公告中心、更新日志等板块，提升用户浏览体验。
+                            </div>
                         </div>
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">飞书接入完成公告</h3>
-                                <span class="notice-date">2025年6月</span>
+                                <h3 class="notice-title">考务平台V2.0版本上线</h3>
+                                <span class="notice-date">2025年4月</span>
                             </div>
-                            <p class="notice-text">组织已完成飞书系统接入，内部人员可通过官网登录入口跳转至飞书进行工作协作，请未注册/未加入组织的人员尽快完成相关操作。</p>
-                        </div>
-                        <div class="notice-item">
-                            <div class="notice-header">
-                                <h3 class="notice-title">内部人员登录页面临时关闭通知</h3>
-                                <span class="notice-date">2025年6月</span>
+                            <div class="notice-text">
+                                考务平台V2.0版本已正式上线，新增试题智能审核、成绩自动统计功能，优化了权限管理体系，提升平台稳定性。
                             </div>
-                            <p class="notice-text">因官网UI全新设计升级，内部人员登录页面将暂时关闭，期间请前往WPS协作平台进行日常办公。</p>
                         </div>
                     </div>
 
@@ -1179,24 +1264,21 @@
                     <div class="notice-content" id="login">
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">内部人员登录说明</h3>
+                                <h3 class="notice-title">内部登录通道调整</h3>
                                 <span class="notice-date">2025年6月</span>
                             </div>
-                            <p class="notice-text">点击官网"内部人员登录"入口，跳转飞书完成登录。未注册飞书账号的人员注册时会弹出组织加入申请；已注册但未加入组织的人员，可在消息栏查收加入申请。</p>
+                            <div class="notice-text">
+                                内部人员登录通道已迁移至飞书协作平台，官网登录入口暂时关闭，可通过飞书工作台访问考务平台及相关服务。
+                            </div>
                         </div>
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">外部人员登录说明</h3>
-                                <span class="notice-date">2025年6月</span>
+                                <h3 class="notice-title">统一登录平台研发中</h3>
+                                <span class="notice-date">2025年2月</span>
                             </div>
-                            <p class="notice-text">（当前通道临时关闭）正常流程：点击"外部人员登录"→选择所属机构→输入机构内部密码。忘记密码可联系官方管理人员（15118586836，微信同步）修改。</p>
-                        </div>
-                        <div class="notice-item">
-                            <div class="notice-header">
-                                <h3 class="notice-title">外部组织注册通道说明</h3>
-                                <span class="notice-date">2025年6月</span>
+                            <div class="notice-text">
+                                组织已启动统一信息登录平台研发工作，预计2025年Q3上线，届时将实现内部/外部用户统一认证、单点登录。
                             </div>
-                            <p class="notice-text">目前暂未开放外部组织注册通道，后续将逐步更新开放，具体时间请关注官网公告。本次更新仅允许已有外部账号的人员登录。</p>
                         </div>
                     </div>
 
@@ -1204,17 +1286,21 @@
                     <div class="notice-content" id="plan">
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">2025年考务平台更新计划</h3>
-                                <span class="notice-date">2025年2月</span>
+                                <h3 class="notice-title">2025年Q3更新计划</h3>
+                                <span class="notice-date">2025年6月</span>
                             </div>
-                            <p class="notice-text">2025年古文九州考务平台将于2025年2月进行重大更新，预计2025年4月24日正式上线发布。</p>
+                            <div class="notice-text">
+                                Q3计划上线统一登录平台、优化考务平台数据可视化功能、新增外部用户申请通道（需审核），具体进度将按月公示。
+                            </div>
                         </div>
                         <div class="notice-item">
                             <div class="notice-header">
-                                <h3 class="notice-title">2026年平台更新预告</h3>
-                                <span class="notice-date">2025年6月</span>
+                                <h3 class="notice-title">2025年全年发展规划</h3>
+                                <span class="notice-date">2025年1月</span>
                             </div>
-                            <p class="notice-text">1. 加入古文九州统一信息登录平台验证机制；2. 2026年考务平台全新UI设计+功能升级；3. 2026年官网全新UI设计+功能升级。</p>
+                            <div class="notice-text">
+                                2025年将完成品牌升级、平台架构重构、服务体系优化三大核心目标，逐步开放外部合作通道，提升组织服务能力。
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1239,31 +1325,27 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div class="contact-details">
-                                <h3>问题反馈</h3>
-                                <!-- 跳转备注：问题反馈链接，替换href为实际反馈页面路径 -->
-                                <p><a href="https://h5.clewm.net/?url=qr61.cn%2FoTRjnU%2Fqfe4er0">点击前往反馈渠道</a></p>
+                                <h3>官方邮箱</h3>
+                                <p>guwenjiuzhou@163.com</p>
                             </div>
                         </div>
                         <div class="contact-item">
                             <div class="contact-icon">
-                                <i class="fas fa-link"></i>
+                                <i class="fas fa-clock"></i>
                             </div>
                             <div class="contact-details">
-                                <h3>快速链接</h3>
-                                <div class="contact-links">
-                                    <!-- 跳转备注：考务平台链接，替换href为实际平台路径 -->
-                                    <a href="https://gudianwenhua.github.io/guwenjiuzhoukaowupingtai/" class="contact-link"><i class="fas fa-globe"></i></a>
-                                    <!-- 跳转备注：用户协议页面，替换href为实际协议路径 -->
-                                    <a href="古文九州官网 用户协议.html" class="contact-link"><i class="fas fa-file-contract"></i></a>
-                                    <!-- 跳转备注：隐私政策页面，替换href为实际政策路径 -->
-                                    <a href="古文九州官网 隐私政策.html" class="contact-link"><i class="fas fa-shield-alt"></i></a>
-                                </div>
+                                <h3>服务时间</h3>
+                                <p>工作日 9:00-18:00（法定节假日除外）</p>
                             </div>
+                        </div>
+                        <div class="contact-links">
+                            <a href="#" class="contact-link"><i class="fab fa-weixin"></i></a>
+                            <a href="#" class="contact-link"><i class="fab fa-qq"></i></a>
+                            <a href="#" class="contact-link"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                     <div class="contact-img">
-                        <!-- 图片替换备注：联系我们板块LOGO图片，替换src为实际图片路径 -->
-                        <img src="qrcode_for_gh_0335b4336e31_258.jpg" alt="古文九州联系方式">
+                        <img src="qrcode_for_gh_0335b4336e31_258.jpg" alt="联系我们">
                     </div>
                 </div>
             </section>
@@ -1273,55 +1355,84 @@
     <!-- 页脚 -->
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <!-- 页脚LOGO替换：将src中的"logo.png"替换为你的组织LOGO图片路径（建议尺寸36x36px） -->
+            <div class="footer-col">
+                <a href="#" class="footer-logo">
                     <img src="logo.png" alt="古文九州LOGO" class="footer-logo-img">
                     古文九州
-                </div>
-                <p class="footer-desc">原古典文化官方网站 | 专注试题研究与考务服务，赋能每一次成长</p>
+                </a>
+                <p class="footer-desc">
+                    专注试题研究，赋能考务服务，为内部及合作机构提供专业的考务相关解决方案。
+                </p>
             </div>
             <div class="footer-links">
                 <h3>快速导航</h3>
                 <ul>
-                    <li><a href="#home" class="footer-link">首页</a></li>
                     <li><a href="#about" class="footer-link">关于我们</a></li>
                     <li><a href="#service" class="footer-link">核心服务</a></li>
                     <li><a href="#log" class="footer-link">更新日志</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h3>更多信息</h3>
-                <ul>
-                    <li><a href="#remind" class="footer-link">特别提醒</a></li>
                     <li><a href="#notice" class="footer-link">公告中心</a></li>
                     <li><a href="#contact" class="footer-link">联系我们</a></li>
-                    <!-- 跳转备注：用户协议页面，替换href为实际协议路径 -->
-                    <li><a href="古文九州官网 用户协议.html" class="footer-link">用户协议</a></li>
                 </ul>
             </div>
             <div class="footer-links">
-                <h3>联系方式</h3>
+                <h3>相关服务</h3>
                 <ul>
-                    <!-- 跳转备注：拨打电话链接，无需修改（仅移动端生效） -->
-                    <li><a href="tel:15118586836" class="footer-link">15118586836</a></li>
-                    <!-- 跳转备注：问题反馈链接，替换href为实际反馈页面路径 -->
-                    <li><a href="https://h5.clewm.net/?url=qr61.cn%2FoTRjnU%2Fqfe4er0" class="footer-link">问题反馈</a></li>
+                    <li><a href="#" class="footer-link">试题研究中心</a></li>
+                    <li><a href="#" class="footer-link">考务管理平台</a></li>
+                    <li><a href="#" class="footer-link">飞书协作平台</a></li>
+                    <li><a href="#" class="footer-link">WPS 365服务</a></li>
+                    <li><a href="#" class="footer-link">用户帮助中心</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>法律声明</h3>
+                <ul>
+                    <li><a href="#" class="footer-link">隐私政策</a></li>
+                    <li><a href="#" class="footer-link">服务条款</a></li>
+                    <li><a href="#" class="footer-link">免责声明</a></li>
+                    <li><a href="#" class="footer-link">知识产权</a></li>
+                    <li><a href="#" class="footer-link">投诉举报</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2021-2026 古文九州 版权所有 | 官方客服：15118586836</p>
+            <p>© 2021-2026 古文九州 版权所有 | 原古典文化品牌升级</p>
         </div>
     </footer>
 
+    <!-- 脚本 -->
     <script>
         // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', function() {
+        window.onload = function() {
+            // 通知弹窗倒计时逻辑
+            let countdown = 5;
+            const countdownText = document.getElementById('countdown');
+            const closeBtn = document.getElementById('closeBtn');
+            const noticeModal = document.getElementById('noticeModal');
+
+            // 倒计时定时器
+            const timer = setInterval(() => {
+                countdown--;
+                countdownText.textContent = `请阅读5秒后关闭（剩余：${countdown}秒）`;
+                // 倒计时结束
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    countdownText.textContent = "可关闭通知";
+                    closeBtn.classList.add('active'); // 按钮激活
+                }
+            }, 1000);
+
+            // 关闭弹窗
+            closeBtn.addEventListener('click', () => {
+                noticeModal.style.display = 'none';
+                // 恢复页面滚动（可选）
+                document.body.style.overflow = 'auto';
+            });
+
             // 导航栏滚动效果
             const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 100) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
                     navbar.classList.add('navbar-scrolled');
                 } else {
                     navbar.classList.remove('navbar-scrolled');
@@ -1332,82 +1443,23 @@
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
             const loginButtons = document.getElementById('loginButtons');
-            
-            menuToggle.addEventListener('click', function() {
+
+            menuToggle.addEventListener('click', () => {
                 navMenu.classList.toggle('mobile-active');
                 loginButtons.classList.toggle('mobile-active');
-                
-                // 切换菜单图标
-                const icon = menuToggle.querySelector('i');
-                if (icon.classList.contains('fa-bars')) {
-                    icon.classList.replace('fa-bars', 'fa-times');
-                } else {
-                    icon.classList.replace('fa-times', 'fa-bars');
-                }
             });
 
-            // 平滑滚动到指定板块
-            function scrollToSection(sectionId) {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    const navbarHeight = navbar.offsetHeight;
-                    const sectionTop = section.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
-                    
-                    window.scrollTo({
-                        top: sectionTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
+            // 板块滚动显示动画
+            const sections = document.querySelectorAll('.section');
+            const logItems = document.querySelectorAll('.log-item');
 
-            // 导航链接点击事件
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 移除所有active类
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    // 添加当前active类
-                    this.classList.add('active');
-                    
-                    const sectionId = this.getAttribute('data-section');
-                    scrollToSection(sectionId);
-                    
-                    // 移动端点击后关闭菜单
-                    if (window.innerWidth <= 768) {
-                        navMenu.classList.remove('mobile-active');
-                        loginButtons.classList.remove('mobile-active');
-                        menuToggle.querySelector('i').classList.replace('fa-times', 'fa-bars');
-                    }
-                });
-            });
-
-            // 公告标签切换
-            const noticeTabs = document.querySelectorAll('.notice-tab');
-            const noticeContents = document.querySelectorAll('.notice-content');
-            
-            noticeTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // 移除所有active类
-                    noticeTabs.forEach(t => t.classList.remove('active'));
-                    noticeContents.forEach(c => c.classList.remove('active'));
-                    
-                    // 添加当前active类
-                    this.classList.add('active');
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-
-            // 滚动动画 - 元素进入视口时显示
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
                 threshold: 0.1
             };
 
-            const sectionObserver = new IntersectionObserver(function(entries) {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
@@ -1415,34 +1467,48 @@
                 });
             }, observerOptions);
 
-            // 观察所有板块
-            const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
-                sectionObserver.observe(section);
+                observer.observe(section);
             });
 
-            // 观察更新日志子项
-            const logItems = document.querySelectorAll('.log-item');
             logItems.forEach(item => {
-                sectionObserver.observe(item);
+                observer.observe(item);
             });
 
-            // 首页链接处理
-            document.querySelector('a[href="#home"]').addEventListener('click', function(e) {
-                e.preventDefault();
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+            // 公告标签切换
+            const noticeTabs = document.querySelectorAll('.notice-tab');
+            const noticeContents = document.querySelectorAll('.notice-content');
+
+            noticeTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 移除所有激活状态
+                    noticeTabs.forEach(t => t.classList.remove('active'));
+                    noticeContents.forEach(c => c.classList.remove('active'));
+                    // 添加当前激活状态
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
                 });
-                
-                // 更新active类
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
             });
 
-            // 初始化 - 标记首页为active
-            document.querySelector('.nav-link[data-section="home"]').classList.add('active');
-        });
+            // 滚动到指定板块
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // 导航链接激活状态
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    const sectionId = link.getAttribute('data-section');
+                    scrollToSection(sectionId);
+                });
+            });
+        };
     </script>
 </body>
 </html>
